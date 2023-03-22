@@ -2,7 +2,14 @@ import "./App.css";
 import osmo from "./logos/osmologo.svg";
 import flipjawn from "./logos/flipsidewhite.png";
 import axios from "axios";
-import react, { useEffect, useRef } from "react";
+import Divider from "@mui/material/Divider";
+import { styled } from '@mui/material/styles';
+import MuiGrid from '@mui/material/Grid';
+
+import React, { useEffect, useRef, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import Validator from "./components/Validator";
+// import DroppableArea from "./components/Droppable";
 
 function App() {
   // const headers3 = {
@@ -409,71 +416,422 @@ function App() {
       "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
   };
 
-  const validators = [
+  const [validators, setValidators] = useState([
     {
+      id: "1",
       name: "flipside",
       logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
       power: "2.25%",
     },
     {
+      id: "2",
       name: "imperator",
-      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/d85f442f668abaac037203356ee6d905_360_360.jpg",
       power: "2.25%",
     },
     {
+      id: "3",
       name: "danku",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/42a43c92fd7896697eaf8157dad39505_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "4",
+      name: "frens",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/77f05c9f4479b689156a691b2640f305_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "5",
+      name: "mango",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/1c6f791ce6df2b7b14ea1d0447ab1c05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "6",
+      name: "marinade",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/d006ff2692078b96b7d54ebfd6c84205_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "7",
+      name: "expressake",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/53b008f12f37e3ffa0dec3676d375a05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "8",
+      name: "stakewithme",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/8c54cca4a597dd5dfdd9665d7ebdda05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "9",
+      name: "lockandkey",
       logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
       power: "2.25%",
     },
     {
-      name: "frens",
+      id: "10",
+      name: "bullish stake",
       logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
       power: "2.25%",
     },
-  ];
+    {
+      id: "11",
+      name: "bearish stake",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "12",
+      name: "frenemies",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "13",
+      name: "gorilla stqke",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "14",
+      name: "sake stake",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "15",
+      name: "birbman stakes",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "16",
+      name: "osmongton",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "17",
+      name: "radicle stake",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "18",
+      name: "starfish",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "19",
+      name: "posthumane",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+    {
+      id: "20",
+      name: "emperorstakes",
+      logo: "https://s3.amazonaws.com/keybase_processed_uploads/c2fdefa03db4d6ef1872239955449e05_360_360.jpg",
+      power: "2.25%",
+    },
+  ]);
+
+  const columnsFromBackend = {
+    [11]: {
+      id: "11",
+      name: "Validators",
+      items: validators,
+    },
+    [22]: {
+      id: "22",
+      name: "Yes",
+      items: [],
+    },
+    [33]: {
+      id: "33",
+      name: "Abstain",
+      items: [],
+    },
+    [44]: {
+      id: "44",
+      name: "No",
+      items: [],
+    },
+    [55]: {
+      id: "55",
+      name: "No With Veto",
+      items: [],
+    },
+  };
+
+  const onDragEnd = (result, columns, setColumns) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+    } else {
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
+    }
+  };
+
+  const [yesVoters, setYesVoters] = useState([]);
+  const [noVoters, setNoVoters] = useState([]);
+  const [abstainVoters, setAbstainVoters] = useState([]);
+  const [nwvVoters, setNwvVoters] = useState([]);
+
+  const [columns, setColumns] = useState(columnsFromBackend);
 
   return (
-    <div className="wrapper">
-      <div className="header">
-        <img src={osmo} className="logomain" alt="osmo" />
-        <h1>Proposal Simulator</h1>
-      </div>
-      <div className="main">
-        <div className="top">
-          <div className="list-house">
-            <h2>Validators</h2>
-            <div></div>
+    <DragDropContext
+      onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+    >
+      <div className="wrapper">
+        <div className="header">
+          <img src={osmo} className="logomain" alt="osmo" />
+          <h1>Proposal Simulator</h1>
+        </div>
+        <div className="main">
+          <div className="top">
+            <div className="list-house">
+              <h2>{columns[11]["name"]}</h2>
+              <div className="valhouse">
+                <Droppable
+                  droppableId={columns[11]["id"]}
+                  key={columns[11]["id"]}
+                >
+                  {(provided, snapshot) => {
+                    return (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? "#49478c"
+                            : "#28274f",
+                          padding: 2,
+                          width: "100%",
+                          minHeight: "100%",
+                          borderRadius: "15px",
+                          display: "flex",
+                          justifyContent: "space-evenly",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        {columns[11].items.map((item, index) => {
+                          return (
+                            <Validator key={item} item={item} index={index} />
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+                {/* <DroppableArea
+                  validators={validators}
+                  key={"dnv"}
+                  category={"dnvCategory"}
+                /> */}
+              </div>
+            </div>
+          </div>
+          <div className="bottom">
+            <div>
+              <Droppable
+                droppableId={columns[22]["id"]}
+                key={columns[22]["id"]}
+              >
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "#49478c"
+                          : "#28274f",
+                      }}
+                      className="yes"
+                    >
+                      <h2>{columns[22]["name"]}</h2>
+                      {columns[22].items.map((item, index) => {
+                        return (
+                          <Validator key={item} item={item} index={index} />
+                        );
+                      })}
+                      {provided.placeholder}
+                    </div>
+                  );
+                }}
+              </Droppable>
+              {/* <DroppableArea
+                validators={yesVoters}
+                key={"yes"}
+                category={"yesCategory"}
+              /> */}
+            </div>
+            <div>
+              <Droppable
+                droppableId={columns[33]["id"]}
+                key={columns[33]["id"]}
+              >
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "#49478c"
+                          : "#28274f",
+                      }}
+                      className="abstain"
+                    >
+                      <h2>{columns[33]["name"]}</h2>
+                      {columns[33].items.map((item, index) => {
+                        return (
+                          <Validator key={item} item={item} index={index} />
+                        );
+                      })}
+                      {provided.placeholder}
+                    </div>
+                  );
+                }}
+              </Droppable>
+              {/* <DroppableArea
+                validators={abstainVoters}
+                key={"abs"}
+                category={"absCategory"}
+              /> */}
+            </div>
+            <div>
+              <Droppable
+                droppableId={columns[44]["id"]}
+                key={columns[44]["id"]}
+              >
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "#49478c"
+                          : "#28274f",
+                      }}
+                      className="no"
+                    >
+                      <h2>{columns[44]["name"]}</h2>
+                      {columns[44].items.map((item, index) => {
+                        return (
+                          <Validator key={item} item={item} index={index} />
+                        );
+                      })}
+                      {provided.placeholder}
+                    </div>
+                  );
+                }}
+              </Droppable>
+              {/* <DroppableArea validators={noVoters} key={"no"} category={"no"} /> */}
+            </div>
+            <div>
+              <Droppable
+                droppableId={columns[55]["id"]}
+                key={columns[55]["id"]}
+              >
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "#49478c"
+                          : "#28274f",
+                      }}
+                      className="noveto"
+                    >
+                      <h2>{columns[55]["name"]}</h2>
+                      {columns[55].items.map((item, index) => {
+                        return (
+                          <Validator key={item} item={item} index={index} />
+                        );
+                      })}
+                      {provided.placeholder}
+                    </div>
+                  );
+                }}
+              </Droppable>
+              {/* <DroppableArea
+                validators={nwvVoters}
+                key={"nwv"}
+                category={"nwvCategory"}
+              /> */}
+            </div>
+          </div>
+          <div className="results">
+            <h2>Results</h2>
+            <div className="results-main">
+              <div className="results-left">
+                <h2>Current Turnout: 31.33%</h2>
+              </div>
+              <Divider
+                orientation="vertical"
+                variant="middle"
+                flexItem={true}
+                light={true}
+                style={{width:'10%', height: "100%", color:"green"}}
+              />
+              <div className="results-right">
+                <h2>Current Status: Pass</h2>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="bottom">
-          <div className="yes">
-            <h2>Yes</h2>
-          </div>
-          <div className="abstain">
-            <h2>Abstain</h2>
-          </div>
-          <div className="no">
-            <h2>No</h2>
-          </div>
-          <div className="noveto">
-            <h2>No With Veto</h2>
-          </div>
+        <div className="logo-footer">
+          <h2 className="footer-bigtxt">Powered by</h2>
+          <a
+            href="https://flipsidecrypto.xyz/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-links"
+          >
+            {" "}
+            <img src={flipjawn} className="flipside-logo" alt="flipside" />{" "}
+          </a>
         </div>
       </div>
-      <div className="logo-footer">
-        <h2 className="footer-bigtxt">Powered by</h2>
-        <a
-          href="https://flipsidecrypto.xyz/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer-links"
-        >
-          {" "}
-          <img src={flipjawn} className="flipside-logo" alt="flipside" />{" "}
-        </a>
-      </div>
-      {/* <img src={thumbnails["00B79D689B7DC1CE"]} /> */}
-    </div>
+    </DragDropContext>
   );
 }
 
